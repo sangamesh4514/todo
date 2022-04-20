@@ -1,34 +1,39 @@
-import db from '../database'
+import db from "../database";
 
-export const getTodos=()=>{
-  return new Promise((resolve,reject)=>{
-    db.query('SELECT * FROM todos', (error, elements) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve(elements);
-    });
-  })
-}
+export const getTodos = (result) => {
+  db.query("SELECT * FROM todos", (err, rows) => {
+    if (err) {
+      result(err, null);
+    } else {
+      result(null, rows);
+    }
+  });
+};
 
-export const updateTodos = (todo) => {
-  return new Promise((resolve, reject) => {
-    db.query(`INSERT into todos(name) values(?);`,[todo],(error, elements) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve(elements);
-    });
-  })
-}
+export const updateTodos = async (todo: any, result) => {
+  db.query(`SELECT * FROM todos WHERE name=?`, [todo], (err, rows) => {
+    if (err) {
+      result(err, null);
+    } else if (rows?.length) {
+      result("Todo Already exists!", null);
+    } else {
+      db.query(`INSERT into todos(name) values(?);`, [todo], (err, rows) => {
+        if (err) {
+          result(err, null);
+        } else {
+          result(null, rows);
+        }
+      });
+    }
+  });
+};
 
-export const deleteTodo = (id) => {
-  return new Promise((resolve, reject) => {
-    db.query(`DELETE FROM todos WHERE id=?;`, [id], (error, elements) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve(elements);
-    });
-  })
-}
+export const deleteTodo = async (id: string, result) => {
+  db.query(`DELETE FROM todos WHERE id=?;`, [id], (err, rows) => {
+    if (err) {
+      result(err, null);
+    } else {
+      result(null, rows);
+    }
+  });
+};
