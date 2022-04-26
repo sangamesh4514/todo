@@ -11,10 +11,10 @@ export const getTodos = (result) => {
 };
 
 export const updateTodos = async (todo: any, result) => {
-  db.query(`SELECT * FROM todos WHERE name=?`, [todo], (err, rows) => {
+  db.query(`SELECT * FROM todos WHERE name=?`, [todo], (err, rows:[]) => {
     if (err) {
       result(err, null);
-    } else if (rows?.length) {
+    } else if (rows.length) {
       result("Todo Already exists!", null);
     } else {
       db.query(`INSERT into todos(name) values(?);`, [todo], (err, rows) => {
