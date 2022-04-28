@@ -9,7 +9,7 @@ db.connect(async(err) => {
     
     app.listen(process.env.PORT, (): void => console.log('server running on port ',process.env.PORT))
     try {
-      redis.connect()
+      await redis.connect()
       } catch (error) {
         console.log("redis error",error);
       }
