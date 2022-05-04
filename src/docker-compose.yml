@@ -1,12 +1,10 @@
 redis:
   image: redis
-  restart: always 
   container_name: myrediscompose
   ports:
     - "6379:6379"
 mysql:
   image: mysql
-  restart: always
   container_name: mysqlserver
   ports:
     - "3306:3306"
